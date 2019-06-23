@@ -8,7 +8,7 @@ until Airport.count == 50 do
 end
 
 #then randomly generate estimated flight times between each airport, recording the time both ways.
-Airport.all.combination(2).each do |origin, destination|
+Airport.all.to_a.combination(2).each do |origin, destination|
   random_duration = "#{(2..16).to_a.sample}#{QUARTER_HOURS.sample}"
   FlightTime.create!(origin: origin, destination: destination, duration: random_duration)
   FlightTime.create!(origin: destination, destination: origin, duration: random_duration)
@@ -29,6 +29,7 @@ def flight_number
 end
 
 def grab_times(time_str)
+  time_str.prepend("0") if time_str.match('^\d{1}:')
   time_str.match('(\d{2}):(\d{2})')[1..2].map{|d| d.to_i}
 end
 
@@ -56,15 +57,14 @@ Airport.all.each do |origin|
       daily_flights.each do |flight|
         duration = FlightTime.find_by(origin: origin, destination: destination).duration
         Flight.create!(
-         flight_number: flight_number
-             departing: origin
-              arriving: destination
-                   day: day
-                   etd: flight
-              duration: duration
-                   eta: calculate_eta(flight, duration)
-               captain: Faker::Name.name
-        )
+         flight_number: flight_number,
+             departing: origin,
+              arriving: destination,
+                   day: day,
+                   etd: flight,
+              duration: duration,
+                   eta: calculate_eta(flight, duration),
+               captain: Faker::Name.name)
       end
     end
   end
