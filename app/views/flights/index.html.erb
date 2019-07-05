@@ -1,0 +1,45 @@
+<h1>Flight Booker</h1>
+
+<%= form_tag("/flights", method:'get') do %>
+  
+  <%= label_tag("departing_airport", "Flying from:") %>
+  <%= select_tag(:departing_airport, options_for_select(@airports, @airports.sample)) %>
+  
+  <%= label_tag("arriving_airport",  "Flying to:") %>
+  <%= select_tag(:arriving_airport,  options_for_select(@airports, @airports.sample)) %><%= tag(:br) %>
+  
+  <%= label_tag("passengers", "Number of Passengers:") %>
+  <%= select_tag(:passengers, options_for_select(@number_of_passengers)) %><%= tag(:br) %>
+  
+  <%= label_tag("departing_date", "Departing:") %>
+  <%= select_date(Date.today, order: [:month, :day, :year], prefix: :departing_date) %><%= tag(:br) %>
+  
+  <%= label_tag("returning_date", "Returning:") %>
+  <%= select_date(Date.today + 7.days, order: [:month, :day, :year], prefix: :returning_date) %><%= tag(:br) %>
+  
+  
+  <%= submit_tag('Search for Flights') %>
+  
+<% end %>
+
+<% if @departing_flights.present? || @returning_flights.present? %>
+
+  <%= form_tag("/booking", method: 'get') do %>
+
+    <%= content_tag(:h3, "Departing Flights:") %>
+      <% @departing_flights.each do |dep| %>
+        <%= radio_button_tag(:departing_flights, "#{dep.id}") %>
+        <%= label_tag ("Flight ##{dep.flight_number} at #{dep.etd}") %><%= tag(:br) %>
+      <% end %>
+    <%= content_tag(:h3, "Returning Flights:") %>
+      <% @returning_flights.each do |ret| %>
+        <%= radio_button_tag(:returning_flights, "#{ret.id}") %>
+        <%= label_tag ("Flight ##{ret.flight_number} at #{ret.etd}") %><%= tag(:br) %>
+      <% end %>
+      
+    <%= hidden_field_tag("passengers", @passengers) %>
+    <%= submit_tag('Book Flights') %>
+
+  <% end %>
+
+<% end %>
