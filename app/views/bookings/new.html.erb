@@ -1,3 +1,20 @@
-<h2>Enter Passenger Information:</h2>
+<%= content_tag(:h3, "Enter Passenger Information:") %>
 
-<%= (form_tag)
+<%= form_for @booking do |f| %>
+  <%= f.hidden_field(:number_of_passengers, value: @number_of_passengers) %>
+  <%= f.hidden_field(:departing_id,  value: @dep_flight.id) %>
+  <%= f.hidden_field(:arriving_id,   value: @ret_flight.id) %>
+  
+  <%= content_tag(:h4, "Flight ##{@dep_flight.flight_number} from #{@dep_airport} to #{@ret_airport}") %>
+  <%= content_tag(:h4, "Flight ##{@ret_flight.flight_number} from #{@ret_airport} to #{@dep_airport}") %>
+  
+  <%= f.fields_for :passengers do |p| %>
+    <%= label_tag "name",  "Name:" %>
+    <%= p.text_field :name %>
+    <%= label_tag "email", "Email:" %>
+    <%= p.text_field :email %>
+    <%= tag(:br) %>
+  <% end %>
+  
+  <%= submit_tag('Submit Passenger Information') %>
+<% end %>

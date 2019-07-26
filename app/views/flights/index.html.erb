@@ -24,7 +24,7 @@
 
 <% if @departing_flights.present? || @returning_flights.present? %>
 
-  <%= form_tag("/booking", method: 'get') do %>
+  <%= form_tag("/book", method: 'get') do %>
 
     <%= content_tag(:h3, "Departing Flights:") %>
       <% @departing_flights.each do |dep| %>

@@ -8,21 +8,21 @@ class FlightsController < ApplicationController
     @departing_flights = find_flights(:departing_date, departing_airport, arriving_airport)
     @returning_flights = find_flights(:returning_date, arriving_airport,  departing_airport)
     
-    @passengers = params.require(:passengers)
+    @passengers = params.fetch(:passengers, "0")
   end
   
   private
   
   def departing_airport
-    params.require(:departing_airport).to_i
+    params.fetch(:departing_airport, "0").to_i
   end
   
   def arriving_airport
-    params.require(:arriving_airport).to_i
+    params.fetch(:arriving_airport, "0").to_i
   end
   
   def find_flights(date, from_airport, to_airport)
-    date  = params.require(date.to_s).permit(:month, :day, :year)
+    date  = params.fetch(date, {}).permit(:month, :day, :year)
     year  = date["year"].to_i
     month = date["month"].to_i
     day   = date["day"].to_i

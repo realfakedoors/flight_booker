@@ -1,0 +1,16 @@
+<%= content_tag(:h2, "Booking Successful!") %>
+
+<%= content_tag(:h4, "Flight ##{@dep.flight_number} from #{@dep.departing.code}
+                to #{@dep.arriving.code} on #{@dep.day} at #{@dep.eta}. Piloted by #{@dep.captain}.
+                Estimated duration: #{@dep.duration}
+                ") %>
+                
+<%= content_tag(:h4, "Flight ##{@ret.flight_number} from #{@ret.departing.code}
+                to #{@ret.arriving.code} on #{@ret.day} at #{@ret.eta}. Piloted by #{@ret.captain}.
+                Estimated duration: #{@ret.duration}
+                ") %>
+
+<%= content_tag(:h4, "Passengers:") %>
+<% @booking.passengers.each do |pass| %>
+  <%= content_tag(:h5, "#{pass.name} #{pass.email}") %>
+<% end %>
